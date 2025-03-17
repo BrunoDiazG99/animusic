@@ -7,14 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { useState } from "react";
+import { AnimeTheme, parseAnimeThemes } from "@/lib/utils";
 
 function MainLayout() {
-  const [musicData, setMusicData] = useState<string>("");
+  const [openingsData, setOpeningsData] = useState<AnimeTheme[]>([]);
+  const [endingsData, setEndingsData] = useState<AnimeTheme[]>([]);
   const [animeName, setAnimeName] = useState<string>("");
+  const [animeImageURL, setAnimeImageURL] = useState<string>("");
+  const [found, setFound] = useState<boolean>(false);
   const [errorString, setErrorString] = useState<string>("");
 
   const clearState = () => {
-    setMusicData("");
+    setOpeningsData([]);
+    setEndingsData([]);
     setAnimeName("");
     setErrorString("");
   };
@@ -33,13 +38,19 @@ function MainLayout() {
       })
       // .then((res) => setMusicData(JSON.stringify(res.data.theme)));
       .then((res) => {
-        console.log(res);
         setAnimeName(res.data.title);
-        setMusicData(JSON.stringify(res.data.theme));
+        setAnimeImageURL(res.data.images.jpg.large_image_url);
+        const { parsedOpenings, parsedEndings } = parseAnimeThemes(
+          res.data.theme
+        );
+        setOpeningsData(parsedOpenings);
+        setEndingsData(parsedEndings);
+        setFound(true);
       })
       .catch((error) => {
         console.error(error);
         setErrorString(error);
+        setFound(false);
       });
   };
 
@@ -49,16 +60,39 @@ function MainLayout() {
       <div className="mx-auto my-0">
         <h1>Animusic</h1>
         <p>--something about anime--</p>
-        <div className="grid mx-auto my-2 w-full max-w-sm items-center gap-2">
+        <div className="grid mx-auto my-2 w-full max-w-md items-center gap-2">
           <Label htmlFor="animeId">Anime ID</Label>
           <Input type="number" id="animeId" placeholder="Anime ID" />
           <Button variant="outline" onClick={getMusicData}>
             Get music
           </Button>
         </div>
-        <div className="flex flex-wrap mx-auto my-2 w-full max-w-sm items-center gap-2">
-          <p>{animeName}</p>
-          <p>{musicData}</p>
+        <div className="flex flex-wrap mx-auto my-2 w-full max-w-md items-center justify-center gap-2">
+          {found && (
+            <>
+              <p>{animeName}</p>
+              <img
+                src={animeImageURL}
+                alt={animeName}
+                width={240}
+                height={240}
+              />
+              <div>
+                {openingsData.map((op) => (
+                  <p
+                    key={`${op.name}-${op.artist}`}
+                  >{`${op.name} by ${op.artist} (eps ${op.episodes})`}</p>
+                ))}
+              </div>
+              <div>
+                {endingsData.map((ed) => (
+                  <p
+                    key={`${ed.name}-${ed.artist}`}
+                  >{`${ed.name} by ${ed.artist} (eps ${ed.episodes})`}</p>
+                ))}
+              </div>
+            </>
+          )}
           {errorString && (
             <Alert
               variant="destructive"
