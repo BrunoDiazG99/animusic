@@ -1,5 +1,5 @@
 import { NavBar } from "./navbar";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -8,20 +8,27 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { useState } from "react";
 import { AnimeTheme, parseAnimeThemes } from "@/lib/utils";
+import { XMLParserComponent } from "./xml-parser";
 
 function MainLayout() {
   const [openingsData, setOpeningsData] = useState<AnimeTheme[]>([]);
   const [endingsData, setEndingsData] = useState<AnimeTheme[]>([]);
   const [animeName, setAnimeName] = useState<string>("");
+  const [animeId, setAnimeId] = useState<number>(0);
   const [animeImageURL, setAnimeImageURL] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [found, setFound] = useState<boolean>(false);
   const [errorString, setErrorString] = useState<string>("");
 
   const clearState = () => {
+    setFound(false);
     setOpeningsData([]);
     setEndingsData([]);
     setAnimeName("");
+    setAnimeId(0);
+    setAnimeImageURL("");
     setErrorString("");
+    setLoading(false);
   };
 
   const getMusicData = () => {
@@ -29,6 +36,7 @@ function MainLayout() {
     const animeIdInput = document.getElementById("animeId") as HTMLInputElement;
     if (!animeIdInput.value) return;
     const animeId = animeIdInput.value;
+    setLoading(true);
     fetch(`https://api.jikan.moe/v4/anime/${animeId}/full`)
       .then((res) => {
         if (res.ok) return res.json();
@@ -39,6 +47,7 @@ function MainLayout() {
       // .then((res) => setMusicData(JSON.stringify(res.data.theme)));
       .then((res) => {
         setAnimeName(res.data.title);
+        setAnimeId(res.data.mal_id);
         setAnimeImageURL(res.data.images.jpg.large_image_url);
         const { parsedOpenings, parsedEndings } = parseAnimeThemes(
           res.data.theme
@@ -46,11 +55,13 @@ function MainLayout() {
         setOpeningsData(parsedOpenings);
         setEndingsData(parsedEndings);
         setFound(true);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
         setErrorString(error);
         setFound(false);
+        setLoading(false);
       });
   };
 
@@ -64,35 +75,9 @@ function MainLayout() {
           <Label htmlFor="animeId">Anime ID</Label>
           <Input type="number" id="animeId" placeholder="Anime ID" />
           <Button variant="outline" onClick={getMusicData}>
+            {loading && <Loader2 className="animate-spin" />}
             Get music
           </Button>
-        </div>
-        <div className="flex flex-wrap mx-auto my-2 w-full max-w-md items-center justify-center gap-2">
-          {found && (
-            <>
-              <p>{animeName}</p>
-              <img
-                src={animeImageURL}
-                alt={animeName}
-                width={240}
-                height={240}
-              />
-              <div>
-                {openingsData.map((op) => (
-                  <p
-                    key={`${op.name}-${op.artist}`}
-                  >{`${op.name} by ${op.artist} (eps ${op.episodes})`}</p>
-                ))}
-              </div>
-              <div>
-                {endingsData.map((ed) => (
-                  <p
-                    key={`${ed.name}-${ed.artist}`}
-                  >{`${ed.name} by ${ed.artist} (eps ${ed.episodes})`}</p>
-                ))}
-              </div>
-            </>
-          )}
           {errorString && (
             <Alert
               variant="destructive"
@@ -104,6 +89,48 @@ function MainLayout() {
             </Alert>
           )}
         </div>
+        <div className="flex flex-row flex-wrap mx-auto my-2 w-full max-w-2xl items-center justify-center gap-3">
+          {found && (
+            <>
+              <div className="min-w-xl">
+                <p>{animeName}</p>
+                <a
+                  href={`https://myanimelist.net/anime/${animeId}`}
+                  target="_blank"
+                >
+                  <img
+                    className="inline"
+                    src={animeImageURL}
+                    alt={animeName}
+                    width={240}
+                    height={240}
+                  />
+                </a>
+              </div>
+              {openingsData.length > 0 && (
+                <div className="min-w-xl">
+                  <h3>Openings</h3>
+                  {openingsData.map((op) => (
+                    <p
+                      key={`${op.name}-${op.artist}`}
+                    >{`${op.name} by ${op.artist} (eps ${op.episodes})`}</p>
+                  ))}
+                </div>
+              )}
+              {endingsData.length > 0 && (
+                <div className="min-w-xl">
+                  <h3>Endings</h3>
+                  {endingsData.map((ed) => (
+                    <p
+                      key={`${ed.name}-${ed.artist}`}
+                    >{`${ed.name} by ${ed.artist} (eps ${ed.episodes})`}</p>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+        <XMLParserComponent />
       </div>
     </main>
   );
