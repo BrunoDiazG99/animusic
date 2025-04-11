@@ -1,14 +1,13 @@
 import { NavBar } from "./navbar";
-import { AlertCircle, Loader2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { AlertCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { useState } from "react";
 import { AnimeTheme, parseAnimeThemes } from "@/lib/utils";
 import { XMLParserComponent } from "./xml-parser";
+import SearchBar from "./search-bar";
 
 function MainLayout() {
   const [openingsData, setOpeningsData] = useState<AnimeTheme[]>([]);
@@ -69,15 +68,11 @@ function MainLayout() {
     <main className="w-full min-h-screen">
       <NavBar />
       <div className="mx-auto my-0">
-        <h1>Animusic</h1>
+        <h1 className="text-6xl my-5">Animusic</h1>
         <p>--something about anime--</p>
         <div className="grid mx-auto my-2 w-full max-w-md items-center gap-2">
           <Label htmlFor="animeId">Anime ID</Label>
-          <Input type="number" id="animeId" placeholder="Anime ID" />
-          <Button variant="outline" onClick={getMusicData}>
-            {loading && <Loader2 className="animate-spin" />}
-            Get music
-          </Button>
+          <SearchBar loading={loading} getMusicData={getMusicData} />
           {errorString && (
             <Alert
               variant="destructive"

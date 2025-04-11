@@ -10,9 +10,9 @@ export function NavBar() {
     >
       <nav className="flex flex-1 flex-row mr-auto ml-1">
         <p
-          className="prose prose-slate md:prose-lg lg:prose-xl dark:prose-invert
+          className="prose prose-slate md:prose-lg lg:prose-xl dark:prose-invert 
           font-bold"
-        >{`Animusic playlister`}</p>
+        >{`by Haruchon`}</p>
       </nav>
       <nav className="pl-0 block ml-auto mr-1">
         <ul className="flex flex-row justify-between items-center mb-0 pl-0 gap-5">
