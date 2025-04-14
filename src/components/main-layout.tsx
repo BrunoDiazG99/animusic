@@ -30,11 +30,8 @@ function MainLayout() {
     setLoading(false);
   };
 
-  const getMusicData = () => {
+  const getMusicData = (animeId: string | number) => {
     clearState();
-    const animeIdInput = document.getElementById("animeId") as HTMLInputElement;
-    if (!animeIdInput.value) return;
-    const animeId = animeIdInput.value;
     setLoading(true);
     fetch(`https://api.jikan.moe/v4/anime/${animeId}/full`)
       .then((res) => {
@@ -43,7 +40,6 @@ function MainLayout() {
           return Promise.reject(res.statusText);
         }
       })
-      // .then((res) => setMusicData(JSON.stringify(res.data.theme)));
       .then((res) => {
         setAnimeName(res.data.title);
         setAnimeId(res.data.mal_id);
@@ -102,22 +98,34 @@ function MainLayout() {
                   />
                 </a>
               </div>
+              {openingsData.length === 0 && (
+                <div className="min-w-xl">
+                  <h3>No Opening Themes Data</h3>
+                </div>
+              )}
               {openingsData.length > 0 && (
                 <div className="min-w-xl">
-                  <h3>Openings</h3>
+                  <h3>Opening Themes</h3>
                   {openingsData.map((op) => (
                     <p
                       key={`${op.name}-${op.artist}`}
+                      className="py-1"
                     >{`${op.name} by ${op.artist} (eps ${op.episodes})`}</p>
                   ))}
                 </div>
               )}
-              {endingsData.length > 0 && (
+              {endingsData.length === 0 && (
                 <div className="min-w-xl">
-                  <h3>Endings</h3>
+                  <h3>No Ending Themes Data</h3>
+                </div>
+              )}
+              {endingsData.length > 0 && (
+                <div className="min-w-xl ">
+                  <h3>Ending Themes</h3>
                   {endingsData.map((ed) => (
                     <p
                       key={`${ed.name}-${ed.artist}`}
+                      className="py-1"
                     >{`${ed.name} by ${ed.artist} (eps ${ed.episodes})`}</p>
                   ))}
                 </div>
