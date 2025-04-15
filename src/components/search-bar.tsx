@@ -7,15 +7,15 @@ import { BasicAnimeInfo, JikanApiAnimeHttpResultType } from "@/lib/types";
 
 type SearchBarProps = {
   getMusicData: (animeId: string | number) => void;
-  loading: boolean;
 };
 
-function SearchBar({ getMusicData, loading }: SearchBarProps) {
+function SearchBar({ getMusicData }: SearchBarProps) {
   const isFirst = useRef(true); //For first render
   const searchWrapperRef = useRef<HTMLDivElement | null>(null);
   const [search, setSearch] = useState<string>("");
   const [searchData, setSearchData] = useState<BasicAnimeInfo[]>([]);
   const [showData, setShowData] = useState<boolean>(false);
+  const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
 
   const debouncedSearchValue = useDebounce(search, 500);
 
@@ -38,12 +38,14 @@ function SearchBar({ getMusicData, loading }: SearchBarProps) {
       isFirst.current = false;
       return;
     }
+    if (debouncedSearchValue === "") return;
 
     let ignore = false; // Helps control undesired searches given multiple inputs
 
     // Cleaning data first
     setSearchData([]);
-    setShowData(false);
+    setShowData(true);
+    setLoadingSearch(true);
 
     const searchQuery = (debouncedSearchValue as string).replace(/ /g, "%20");
 
@@ -72,6 +74,9 @@ function SearchBar({ getMusicData, loading }: SearchBarProps) {
         });
         setSearchData(animeData);
         setShowData(true);
+      })
+      .finally(() => {
+        setLoadingSearch(false);
       });
 
     return () => {
@@ -109,7 +114,7 @@ function SearchBar({ getMusicData, loading }: SearchBarProps) {
         />
         {showData && (
           <SearchBarResults
-            loading={loading}
+            loading={loadingSearch}
             handleAnimeId={handleAnimeId}
             searchData={searchData}
           ></SearchBarResults>

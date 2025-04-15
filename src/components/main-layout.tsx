@@ -1,5 +1,5 @@
 import { NavBar } from "./navbar";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -68,7 +68,7 @@ function MainLayout() {
         <p>--something about anime--</p>
         <div className="grid mx-auto my-2 w-full max-w-md items-center gap-2">
           <Label htmlFor="animeId">Anime ID</Label>
-          <SearchBar loading={loading} getMusicData={getMusicData} />
+          <SearchBar getMusicData={getMusicData} />
           {errorString && (
             <Alert
               variant="destructive"
@@ -80,6 +80,11 @@ function MainLayout() {
             </Alert>
           )}
         </div>
+        {loading && (
+          <div className="min-w-x">
+            <Loader2 className="animate-spin mx-auto my-0" />
+          </div>
+        )}
         <div className="flex flex-row flex-wrap mx-auto my-2 w-full max-w-2xl items-center justify-center gap-3">
           {found && (
             <>
