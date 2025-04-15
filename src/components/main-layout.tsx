@@ -6,7 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { useState } from "react";
 import { AnimeTheme, parseAnimeThemes } from "@/lib/utils";
-import { XMLParserComponent } from "./xml-parser";
+// import { XMLParserComponent } from "./xml-parser";
 import SearchBar from "./search-bar";
 
 function MainLayout() {
@@ -65,9 +65,14 @@ function MainLayout() {
       <NavBar />
       <div className="mx-auto my-0">
         <h1 className="text-6xl my-5">Animusic</h1>
-        <p>--something about anime--</p>
+        <p className="my-10">
+          This is a small project for searching (and in the future listening,
+          hopefully) anime opening and ending themes
+        </p>
         <div className="grid mx-auto my-2 w-full max-w-md items-center gap-2">
-          <Label htmlFor="animeId">Anime ID</Label>
+          <Label htmlFor="animeId">
+            Search your anime here (Can use MyAnimeList's IDs):
+          </Label>
           <SearchBar getMusicData={getMusicData} />
           {errorString && (
             <Alert
@@ -138,7 +143,7 @@ function MainLayout() {
             </>
           )}
         </div>
-        <XMLParserComponent />
+        {/* <XMLParserComponent /> */}
       </div>
     </main>
   );

@@ -107,7 +107,7 @@ function SearchBar({ getMusicData }: SearchBarProps) {
           type="text"
           id="animeId"
           autoComplete="off"
-          placeholder="Anime ID"
+          placeholder="Anime Name or ID "
           value={search}
           onChange={handleSearch}
           onFocus={handleOnFocus}

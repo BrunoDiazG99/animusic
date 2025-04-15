@@ -1,54 +1,24 @@
-# React + TypeScript + Vite
+# Animusic!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a small project for searching and listening to anime opening and ending themes.
 
-Currently, two official plugins are available:
+Deployed at: [Animusic!](https://haruchon.github.io/animusic/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The project uses [Jikan Api](https://jikan.moe/) for anime and themes searches and [Spotify Api](https://developer.spotify.com/) for listening to those themes (at least those available)
 
-## Expanding the ESLint configuration
+## Techs used:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [Vite](https://vite.dev/)
+- [React](https://es.react.dev/)
+- [Github Pages](https://pages.github.com/) <sub><sup>(duh)</sup></sub>
+- [Jikan Api](https://jikan.moe/)
+- [Spotify Api](https://developer.spotify.com/)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Thanks for reading and using this page!
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+> by [Haruchon](https://haruchon.github.io)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+##
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Disclaimer:
+All artwork and music featured on this website are the property of their respective owners. We do not claim ownership over any third-party content displayed here. If you are the owner of any content and wish to have it removed or properly credited, please contact us.

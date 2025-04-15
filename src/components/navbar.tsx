@@ -12,7 +12,13 @@ export function NavBar() {
         <p
           className="prose prose-slate md:prose-lg lg:prose-xl dark:prose-invert 
           font-bold"
-        >{`by Haruchon`}</p>
+        >
+          <a
+            className="no-underline"
+            target="_blank"
+            href="https://haruchon.github.io"
+          >{`by Haruchon`}</a>
+        </p>
       </nav>
       <nav className="pl-0 block ml-auto mr-1">
         <ul className="flex flex-row justify-between items-center mb-0 pl-0 gap-5">
