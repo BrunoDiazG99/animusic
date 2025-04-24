@@ -50,7 +50,7 @@ function SearchBar({ getMusicData }: SearchBarProps) {
     const searchQuery = (debouncedSearchValue as string).replace(/ /g, "%20");
 
     fetch(
-      `https://api.jikan.moe/v4/anime?page=1&limit=20&order_by=title&sort=asc&q=${searchQuery}`
+      `https://api.jikan.moe/v4/anime?page=1&limit=25&sfw=true&order_by=title&sort=asc&q=${searchQuery}`
     )
       .then((res) => {
         if (res.ok) return res.json();
@@ -107,7 +107,7 @@ function SearchBar({ getMusicData }: SearchBarProps) {
           type="text"
           id="animeId"
           autoComplete="off"
-          placeholder="Anime Name or ID "
+          placeholder="Anime Name"
           value={search}
           onChange={handleSearch}
           onFocus={handleOnFocus}

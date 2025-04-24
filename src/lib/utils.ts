@@ -8,6 +8,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function checkForStringNonEmpty(item: string | null) {
+  return typeof item === "string" && item?.trim() !== "";
+}
+
 type ThemesHttpResponse = {
   openings: string[];
   endings: string[];
