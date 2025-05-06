@@ -92,59 +92,7 @@ function MainLayout() {
             <Loader2 className="animate-spin mx-auto my-0" />
           </div>
         )}
-        <div className="flex flex-row flex-wrap mx-auto my-2 w-full max-w-2xl items-center justify-center gap-3">
-          {found && (
-            <>
-              <div className="min-w-xl">
-                <p>{animeName}</p>
-                <a
-                  href={`https://myanimelist.net/anime/${animeId}`}
-                  target="_blank"
-                >
-                  <img
-                    className="inline"
-                    src={animeImageURL}
-                    alt={animeName}
-                    width={240}
-                    height={240}
-                  />
-                </a>
-              </div>
-              {openingsData.length === 0 && (
-                <div className="min-w-xl">
-                  <h3>No Opening Themes Data</h3>
-                </div>
-              )}
-              {openingsData.length > 0 && (
-                <div className="min-w-xl">
-                  <h3>Opening Themes</h3>
-                  {openingsData.map((op) => (
-                    <p
-                      key={`${op.name}-${op.artist}`}
-                      className="py-1"
-                    >{`${op.name} by ${op.artist} (eps ${op.episodes})`}</p>
-                  ))}
-                </div>
-              )}
-              {endingsData.length === 0 && (
-                <div className="min-w-xl">
-                  <h3>No Ending Themes Data</h3>
-                </div>
-              )}
-              {endingsData.length > 0 && (
-                <div className="min-w-xl ">
-                  <h3>Ending Themes</h3>
-                  {endingsData.map((ed) => (
-                    <p
-                      key={`${ed.name}-${ed.artist}`}
-                      className="py-1"
-                    >{`${ed.name} by ${ed.artist} (eps ${ed.episodes})`}</p>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+
         {/* <XMLParserComponent /> */}
         <Spotify />
       </div>
