@@ -5,35 +5,29 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { useState } from "react";
-import { AnimeTheme, parseAnimeThemes } from "@/lib/utils";
+import { parseAnimeThemes } from "@/lib/utils";
 // import { XMLParserComponent } from "./xml-parser";
 import SearchBar from "./search-bar";
-import Spotify from "./music/spoti";
+// import Spotify from "./music/spoti";
 import { Link } from "@tanstack/react-router";
+import useAnimusicStore from "@/state/store.ts";
+import Themes from "./music/themes.tsx";
 
 function MainLayout() {
-  const [openingsData, setOpeningsData] = useState<AnimeTheme[]>([]);
-  const [endingsData, setEndingsData] = useState<AnimeTheme[]>([]);
-  const [animeName, setAnimeName] = useState<string>("");
-  const [animeId, setAnimeId] = useState<number>(0);
-  const [animeImageURL, setAnimeImageURL] = useState<string>("");
+  const clearState = useAnimusicStore((state) => state.clearState);
+  const updateState = useAnimusicStore((state) => state.updateState);
+
   const [loading, setLoading] = useState<boolean>(false);
-  const [found, setFound] = useState<boolean>(false);
   const [errorString, setErrorString] = useState<string>("");
 
-  const clearState = () => {
-    setFound(false);
-    setOpeningsData([]);
-    setEndingsData([]);
-    setAnimeName("");
-    setAnimeId(0);
-    setAnimeImageURL("");
+  const clear = () => {
+    clearState();
     setErrorString("");
     setLoading(false);
   };
 
   const getMusicData = (animeId: string | number) => {
-    clearState();
+    clear();
     setLoading(true);
     fetch(`https://api.jikan.moe/v4/anime/${animeId}/full`)
       .then((res) => {
@@ -43,21 +37,23 @@ function MainLayout() {
         }
       })
       .then((res) => {
-        setAnimeName(res.data.title);
-        setAnimeId(res.data.mal_id);
-        setAnimeImageURL(res.data.images.jpg.large_image_url);
         const { parsedOpenings, parsedEndings } = parseAnimeThemes(
           res.data.theme
         );
-        setOpeningsData(parsedOpenings);
-        setEndingsData(parsedEndings);
-        setFound(true);
+        updateState({
+          animeId: res.data.mal_id,
+          animeName: res.data.title,
+          animeImageURL: res.data.images.jpg.large_image_url,
+          openingsData: parsedOpenings,
+          endingsData: parsedEndings,
+          musicFound: true,
+        });
         setLoading(false);
       })
       .catch((error) => {
         console.error(error);
+        updateState({ musicFound: false });
         setErrorString(error);
-        setFound(false);
         setLoading(false);
       });
   };
@@ -94,7 +90,8 @@ function MainLayout() {
         )}
 
         {/* <XMLParserComponent /> */}
-        <Spotify />
+        {/* <Spotify /> */}
+        <Themes />
       </div>
     </main>
   );
