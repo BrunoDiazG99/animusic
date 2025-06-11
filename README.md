@@ -2,7 +2,7 @@
 
 This is a small project for searching and listening to anime opening and ending themes.
 
-Deployed at: [Animusic!](https://haruchon.github.io/animusic/)
+Deployed at: [Animusic!](https://brunodiazg99.github.io/animusic/)
 
 The project uses [Jikan Api](https://jikan.moe/) for anime and themes searches and [Spotify Api](https://developer.spotify.com/) for listening to those themes (at least those available)
 
@@ -16,7 +16,7 @@ The project uses [Jikan Api](https://jikan.moe/) for anime and themes searches a
 
 Thanks for reading and using this page!
 
-> by [Haruchon](https://haruchon.github.io)
+> by [Bruno Diaz](https://brunodiazg99.github.io)
 
 ##
 
