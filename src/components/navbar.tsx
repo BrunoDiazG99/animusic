@@ -16,7 +16,7 @@ export function NavBar() {
           <a
             className="no-underline"
             target="_blank"
-            href="https://haruchon.github.io"
+            href="https://brunodiazg99.github.io"
           >{`by Haruchon`}</a>
         </p>
       </nav>
